@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en" style="height: 100%;">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <title>Status</title>
+  </head>
+    <body style="height: 100%;">
+      <div class="container my-auto" style="position : fixed;margin : auto; top : 25%;left: 8%;">
+        <center>
+            {% if not check %}
+              <a href="{% url 'home' %}">
+            <img src="https://media.giphy.com/media/LXHTGrBhLMYhpzksR1/giphy.gif" width="200" height="200" alt="Failed">
+            </a>
+                <br>
+            <br>
+            <h1 >You are not Authorized..!</h1>
+            {% else %}
+             <a href="{% url 'home' %}">
+            <img src="https://media.giphy.com/media/MLdK32iixVoLka8WMg/giphy.gif" width="200" height="200" alt="Accepted">
+            </a>
+                <br>
+            <br>
+            {% endif %}
+            {% if check == "as" %}
+            <h1 >Your Attendance Accepted!!</h1>
+            {% endif %}
+            {% if check == "rs" %}
+            <h1>Registered Successfully..!</h1>
+            {% endif %}
+    </center>
+      </div>
+    </body>
+</html>

@@ -1,0 +1,143 @@
+
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Face Authenticate</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+		<style>
+#my_camera{
+ width: 500px;
+ height: 500px;
+ /* border: 1px solid black; */
+}
+
+#submitButton{
+width: 100px;
+height: 50px;
+}
+
+body{
+background-color: rgba(236, 240, 239, 1);
+}
+
+
+
+#loading{
+    width:100%;
+    display: "none";
+    height:5%;
+    position:fixed;
+    z-index:9999;
+    background:url("https://media.giphy.com/media/swhRkVYLJDrCE/giphy.gif") no-repeat center center rgba(236,240,239,1);
+
+}
+
+
+#web{
+
+display : "block";
+
+}
+</style>
+    </head>
+    <body>
+            <div class="container" style="height: 95%;"  id="web">
+
+               <div class="row" style="visibility: hidden;"><h1 id="num">{{ ph_num }}</h1></div> 
+             <div class="row mx-auto" id="my_camera"></div>
+                <div class="row">
+                <button type="submit" id="submitButton" class="btn-success btn-sm mx-auto mt-2" >Evaluate</button></div>
+<!--                <button class="btn-primary"><a href="{% url 'register_user' %}">Submit</a> </button>-->
+            </div>
+            <div id="loading" style="display:none;">
+
+            </div>
+         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            {% load static %}
+        <script  src="{% static 'webcam.min.js' %}"></script>
+<!--       <script src="{% static 'js/main.js' % }"></script>-->
+    <script>
+
+
+           $(document).ready(function(){
+  Webcam.set({
+                  width: 900,
+                  height: 400,
+                  image_format: 'jpeg',
+                  jpeg_quality: 90,
+                 });
+         Webcam.attach( '#my_camera' );
+    $("#submitButton").click(function(){
+     Webcam.snap( function(data_uri) {
+             appendFileAndSubmit(data_uri);
+ } );
+
+                e.preventDefault();
+    });
+});
+
+function makePostRequest(base64,num){
+   //alert(" Auth Request has been sent ");
+    $.ajax({
+    url: "{% url 'webAuth' %}",
+    type:"POST",
+    //dataType: 'json',
+    data: {
+        check : "check",
+        base64:base64,
+        num : num,
+        csrfmiddlewaretoken:'{{csrf_token}}'
+        },
+
+    error:function(xhr,errmsg,err){
+        //alert("sorry request has not been sent");
+         window.location.replace("{% url 'failure' %}");
+    }
+}).done(function(msg){
+    //alert("Authenticated Succefully");
+    if (msg=="successful"){
+   window.location.replace("{% url 'success' %}");
+   }
+   else{
+   document.getElementById('web').style.display="block";
+document.getElementById('loading').style.display="none";
+    window.location.replace("{% url 'failure' %}");
+   }
+  });
+}
+
+
+            function appendFileAndSubmit(data_uri){
+                        console.log("before");
+
+                     document.getElementById('web').style.display="none";
+                     document.getElementById('loading').style.height="100%";
+                        document.getElementById('loading').style.display="block";
+                     console.log("after");
+
+                var ImageURL = data_uri;
+
+                // Split the base64 string in data and contentType
+                var block = ImageURL.split(";");
+
+                // Get the content type
+                var contentType = block[0].split(":")[1];// In this case "image/gif"
+
+                // get the real base64 content of the file
+                var realData = block[1].split(",")[1];// In this case "iVBORw0KGg...."
+
+                // Convert to blob
+              //  var blob = b64toBlob(realData, contentType);
+
+                // Create a FormData and append the file
+
+                // var fd = new FormData(form);
+              //  fd.append("image", blob);
+            var num = $("#num").text();
+              makePostRequest(realData,num);
+            }
+ </script>
+    </body>
+</html>
