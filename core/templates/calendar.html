@@ -6,12 +6,13 @@
         <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
         <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;1,200&display=swap" rel="stylesheet">
-       <style>
+       <title>Calender</title>
+        <style>
 
          #pr{
           width: 35px;
   height: 35px;
-  font-size: 28px;
+  font-size: 25px;
   background-color: rgb(53, 135,85);
   border-radius:50%;
   color: white;
@@ -20,7 +21,7 @@
          }
 
          #ab{
-          font-size: 28px;
+          font-size: 25px;
       width: 35px;
   height: 35px;
   background-color: rgb(220, 145,129);
@@ -88,23 +89,23 @@ body {
 <!--          <a class="nav-link active" aria-current="page" href="#">Home</a>-->
         </li>
       </ul>
-        <a href="{%  url 'logout' %}"> <button class="btn btn-success " type="submit">Logout</button></a>
+        <a href="{%  url 'logout' %}"> <button class="btn btn-success " style="border-radius: 30px;" type="submit">Logout</button></a>
     </div>
   </div>
 </nav>
-<div class="container mx-auto my-auto col-lg-4 " style="position : fixed;margin : auto; top : 35%; right: 55%;">
-<div class="card shadow p-2 mb-5 bg-white rounded" style="width: auto;">
+<div class="container mx-auto my-auto col-lg-4 " style="position : fixed;margin : auto; top : 35%; right: 53%;">
+<div class="card shadow p-2 mb-5 bg-white " style="width: auto;border-radius: 5%;">
   <div class="card-body">
-    <h4 class="card-title"style="font-family:'Poppins', sans-seri;font-weight: 600;">Profile</h4><hr/>
-    <h5 class="card-text mb-3" style="font-family:'Poppins', sans-seri;">Name : {{ name }}</h5>
-    <h5 class="card-text mb-3" style="font-family:'Poppins', sans-seri;">Mobile No : +91 {{ ph_num }} </h5>
-    <h5 class="card-text mb-3" style="font-family:'Poppins', sans-seri;">No Of Days Present : <span  id="pr"> {{ present }} </span>  </h5>
-    <h5 class="card-text mb-3"  style="font-family:'Poppins', sans-seri;">No Of Days Absent :<span id="ab"> {{ absent }}  </span></h5>
+    <h4 class="card-title"style="font-family:'Poppins', sans-serif;font-weight: 600;">Profile</h4><hr/>
+    <h5 class="card-text mb-3" style="font-family:'Poppins', sans-serif;">Name : {{ name }}</h5>
+    <h5 class="card-text mb-3" style="font-family:'Poppins', sans-serif;">Mobile No : +91  {{ ph_num }} </h5>
+    <h5 class="card-text mb-3" style="font-family:'Poppins', sans-serif;">No Of Days Present : <span  id="pr"> {{ present }} </span>  </h5>
+    <h5 class="card-text mb-3"  style="font-family:'Poppins', sans-serif;">No Of Days Absent :<span id="ab"> {{ absent }}  </span></h5>
   </div>
 </div>
 </div>
-<div class="container mx-auto my-auto col-lg-4 " style="position : fixed;margin : auto; top : 25%; left : 55%;">
-  <div class="card shadow p-2 mb-5 bg-white rounded" style="width: auto;">
+<div class="container mx-auto my-auto col-lg-4 " style="position : fixed;margin : auto; top : 23%; left : 55%;">
+  <div class="card shadow p-2 mb-5 bg-white " style="width: auto;border-radius: 5%;">
 <div class="card-body">
 <div class="container " >
   <center><h4 class="card-title "  style="font-family:'Poppins', sans-seri;font-weight: 600;">{{ month }}</h4></center>
@@ -123,7 +124,7 @@ body {
     {% for i in lst %}
           {% if not forloop.counter|divisibleby:'7' %}
               {% if i == -1 %}
-              <td class="present">#</td>
+              <td class="present"></td>
               {% elif i == 1 %}
 
               <td class="present bg-success">{{ forloop.counter|add:nos}} </td>
@@ -158,7 +159,7 @@ body {
 </div>
 <div class="container mt-2 p-4" >
   <div class="row">
-<div class="col col-lg-6 " style="display: flex;flex-direction: column; align-items: flex-end;">
+<div class="col col-lg-6 " style="display: flex;flex-direction: column; align-items: flex-end;padding-right: 0px;">
         <form id="myForm" action="{% url 'calender' %} " method="post">
 
             {% csrf_token %}
@@ -166,25 +167,21 @@ body {
     <input type="hidden" class="form-control mt-2 mb-1" id="mobile" name="number" value="{{ ph_num }}" placeholder="Enter Phone No..">
 
             
-                     <!-- <label for="inlineFormCustomSelect">Month : </label> -->
-      <select class="form-select mr-sm-2 mx-2 " style="width: 120px;" id="inlineFormCustomSelect" name="month">
+      <select class="form-select mr-sm-1 mx-1 " style="width: 120px;border-radius: 30px;" id="inlineFormCustomSelect" name="month">
 
           {% for i in l %}
         <option value = "{{ i }}" >{{ i }}</option>
           {% endfor %}
       </select>
     </div>
-    <div class="col col-lg-6">
-            <button  id="submitButton" name="submitButton" class="btn btn-success  ">Submit</button>
+    <div class="col col-lg-6" >
+            <button  id="submitButton" name="submitButton" class="btn btn-success  " style="border-radius: 30px;">Submit</button>
        
-          </div>   <!-- Submit -->
+          </div>   
 
         </form>
 
             </div>
             </div>
-
-
-
 </body>
 </html>

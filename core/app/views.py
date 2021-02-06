@@ -19,16 +19,6 @@ from .models import Web
 
 
 
-
-@login_required()
-def home(request):
-    username = request.user.username
-    return render(request, 'home.html', {'username': username})
-
-def test(request):
-    return render(request, "test.html")
-
-
 @login_required()
 def register_user(request):
     check = request.user.is_superuser
@@ -50,7 +40,7 @@ def register_user(request):
                 # if a is None:
                 web_form.save()
                 return render(request, 'web.html', {"ph_num": ph_num})
-            elif len(Web.objects.get(ph_num=request.POST.get("ph_num")).weights)==0:
+            elif len(Web.objects.get(ph_num=request.POST.get("ph_num")).weights) == 0:
                 print("Current gone")
         except ValueError:
             print("Got Value Error")
@@ -71,7 +61,7 @@ def authenticate_user(request):
             ph_num = request.POST.get('ph_num')
             d["ph_num"] = ph_num
             try:
-                if len(Web.objects.get(ph_num=ph_num).weights)==0:
+                if len(Web.objects.get(ph_num=ph_num).weights) == 0:
                     print("Pass")
             except ValueError:
                 messages.error(request, " User  not found , please register!! ")
@@ -107,10 +97,7 @@ def web(request):
         a.weights.save(s, image_file)
         print(num)
 
-    return HttpResponse("Hello")
-
-
-
+    return HttpResponse("<h1>You are not Authorized!!</h1>")
 
 
 @csrf_exempt
@@ -125,7 +112,7 @@ def webAuth(request):
         return s
 
     if request.method == "POST":
-        check=False
+        check = False
         b = request.POST.get('base64')
         num = request.POST.get('num')
         image = ContentFile(base64.b64decode(b))
@@ -138,10 +125,10 @@ def webAuth(request):
             check = is_match(weights[0], weights[1])
         except IndexError:
             print("Index out of range")
-            check=False
+            check = False
         finally:
             os.remove(s)
-            if check == True:
+            if check:
 
                 print("Face Matched")
                 tempfile_io = BytesIO()
@@ -152,13 +139,29 @@ def webAuth(request):
                 a.save()
                 a = Web.objects.get(ph_num=num)
                 remove = 'users/' + s
-                a = Web.objects.get(ph_num=num)
-                comp = json.loads(a.attendance)
                 d = datetime.datetime.now()
                 month = d.strftime("%b")
                 date = d.strftime("%d")
+                mon = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+                if date == '01' and month != "Jan":
+                    b = Web.objects.get(ph_num=num)
+                    com = json.loads(b.attendance)
+                    i = mon.index(month) - 1
+                    mont = mon[i]
+                    lst = com[str(mont)]
+                    print(lst)
+                    if lst[len(lst) - 1] == 2:
+                        lst[len(lst) - 1] = 0
+                        com[str(mont)] = lst
+                        b.attendance = json.dumps(com)
+                        b.save()
+                a = Web.objects.get(ph_num=num)
+                comp = json.loads(a.attendance)
                 l = comp[str(month)]
                 l[int(date) - 1] = 1
+                for i in range(0, int(date) - 1):
+                    if l[i] == 2:
+                        l[i] = 0
                 for i in range(int(date), len(l)):
                     l[i] = 2
                 comp[str(month)] = l
@@ -177,12 +180,12 @@ def webAuth(request):
 
 @login_required()
 def home(request):
-    d=datetime.datetime.now()
-    mon=d.strftime("%b")
-    l=abc(mon)
+    d = datetime.datetime.now()
+    mon = d.strftime("%b")
+    l = abc(mon)
     form = StatusForm()
     check = request.user.is_superuser
-    return render(request, "profile.html", {"form": form, "check": check,"l":l})
+    return render(request, "profile.html", {"form": form, "check": check, "l": l})
 
 
 @login_required()
@@ -209,18 +212,19 @@ def Failure(request):
     return render(request, "failure.html", {"check": check})
 
 
-def get_white_spaces(year,month):
-    mon=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
-    week=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
-    a=mon.index(month)+1
-    day=datetime.datetime(year,a,1)
-    day=day.strftime("%a")
+def get_white_spaces(year, month):
+    mon = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    week = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+    a = mon.index(month) + 1
+    day = datetime.datetime(year, a, 1)
+    day = day.strftime("%a")
     nos = week.index(day)
-    return  nos
+    return nos
+
 
 def abc(month):
     mon = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-    l=mon[:mon.index(month)+1]
+    l = mon[:mon.index(month) + 1]
     return l
 
 
@@ -237,14 +241,16 @@ def Calender(request):
             messages.error(request, "User  not found !!")
             return redirect('home')
         comp = json.loads(a.attendance)
-        b = datetime.datetime.strptime(str(mon),"%b")
-        c=datetime.datetime(d.year,int(b.strftime("%m")),1)
-        c=c.strftime("%B")
-        nos_spaces = get_white_spaces(d.year,mon)
-        lst =list(comp[str(mon)])
-        if  month==mon and lst.count(0) == len(lst):
+        b = datetime.datetime.strptime(str(mon), "%b")
+        c = datetime.datetime(d.year, int(b.strftime("%m")), 1)
+        c = c.strftime("%B")
+        nos_spaces = get_white_spaces(d.year, mon)
+        lst = list(comp[str(mon)])
+        if month == mon and lst.count(0) == len(lst):
             lst = [2] * len(lst)
         for i in range(nos_spaces):
-            lst.insert(0,-1)
-        
-        return render(request, "calendar.html", {"lst": lst,"nos": -nos_spaces,"l":l,"ph_num":num,"name":a.name,"present":lst.count(1),"absent":lst.count(0),"month": c})
+            lst.insert(0, -1)
+
+        return render(request, "calendar.html",
+                      {"lst": lst, "nos": -nos_spaces, "l": l, "ph_num": num, "name": a.name, "present": lst.count(1),
+                       "absent": lst.count(0), "month": c})

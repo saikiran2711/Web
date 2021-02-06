@@ -34,8 +34,8 @@ body {
                 <a class="nav-link active" aria-current="page" href="#">Home</a>
               </li> -->
             </ul>
-                <a href="{% url 'register_user' %}"> <button class="btn btn-success mx-2">Register User</button> </a>
-              <a href="{%  url 'logout' %}"> <button class="btn btn-outline-success " type="submit">Logout</button></a>
+                <a href="{% url 'register_user' %}"> <button class="btn btn-success mx-2" style="border-radius: 30px;">Register User</button> </a>
+              <a href="{%  url 'logout' %}"> <button class="btn btn-success " style="border-radius: 30px;" type="submit">Logout</button></a>
       
           </div>
         </div>
@@ -56,7 +56,7 @@ body {
                 </style>
                 <div  class="form-group " >
             {{ auth_form|crispy }}
-            <button type="submit" id="submitButton" name="submitButton"  class="btn btn-success mt-3 " >Submit</button>
+            <button type="submit" id="submitButton" name="submitButton"  class="btn btn-success mt-3 " style="border-radius: 30px;" >Submit</button>
 
             </div>
            
@@ -66,16 +66,30 @@ body {
          </div>
          <center>
             {% for msg in messages %}
-
             <p style="font-weight : 400;">{{ msg }}</p>
-            <a href="{% url 'register_user' %}"> <button class="btn btn-success mx-2">Register</button> </a>
+            <a href="{% url 'register_user' %}"> <button class="btn btn-success mx-2" style="border-radius: 30px;">Register</button> </a>
             {% endfor %}
          </center>
      
     </div>
+    <div class="container" style=" position : fixed;margin : auto; top : 93%; left : 7%; ">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="copyright-box">
+            <center>
+              <p class="copyright" style="margin: auto;font-size: 16px;">&copy; Copyright MGNREGA. All Rights Reserved</p>
+            </center>
+          
+          </div>
+        </div>
+      </div>
+    </div>
    
     {% else %}
-        <h1>You are not authorized to view this page</h1>
+    <center>
+      <h1>You are not authorized to view this page</h1>
+    </center>
+        
     {% endif %}
     </body>
 </html>

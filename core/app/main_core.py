@@ -1,4 +1,3 @@
-# import keras
 from matplotlib import pyplot
 from PIL import Image
 from numpy import asarray
@@ -6,6 +5,8 @@ from scipy.spatial.distance import cosine
 from mtcnn.mtcnn import MTCNN
 from keras_vggface.vggface import VGGFace
 from keras_vggface.utils import preprocess_input
+
+
 # extract a single face from a given photograph
 def extract_face(filename, required_size=(224, 224)):
     # load image from file

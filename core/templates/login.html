@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-    <title>Sign Up Form </title>
+    <title>Sign in</title>
 
 
     <!-- Font Icon -->
@@ -30,7 +30,6 @@
                 <div class="signin-content">
                     <div class="signin-image">
                         <figure><img src="{% static 'images/signin-image.jpg' %}" alt="sing up image"></figure>
-<!--                        <a href="{% url 'register'%}" class="signup-image-link">Create an account</a>-->
                     </div>
 
                     <div class="signin-form">
@@ -55,14 +54,6 @@
                         {% for message in messages %}
                             <p style="color: tomato;"> {{ message }}</p>
                         {% endfor %}
-<!--                        <div class="social-login">-->
-<!--                            <span class="social-label">Or login with</span>-->
-<!--                            <ul class="socials">-->
-<!--                                <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>-->
-<!--                                <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>-->
-<!--                                <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>-->
-<!--                            </ul>-->
-<!--                        </div>-->
                     </div>
                 </div>
             </div>
